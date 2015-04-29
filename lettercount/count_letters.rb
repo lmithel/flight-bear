@@ -14,4 +14,5 @@ def count_letter_indices(sentence)
   puts letters.inspect
 end
 
+count_letter("cool beans")
 count_letter_indices("cool beans")
