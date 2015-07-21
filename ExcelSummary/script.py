@@ -20,15 +20,13 @@ except IOError as e:
     ws.cell('K1').value = "Input Value of Amt Received"
     ws.cell('L1').value = "Proposed Funding Changes"
 
-print "this is the working dir" + os.getcwd()
 path = 'excelfiles'
 contracts = []
-
 
 for filename in os.listdir(path): #go through each contract file in directory
     wb = load_workbook(path + "/" + filename, data_only=True) #open a contract file
     
-    if 'Non' in filename: #Not Home Share Contracts
+    if 'HS' not in filename: #Not Home Share Contracts
    	row = []
     	sheet = wb.get_sheet_by_name('Page1') 
         row.append(filename)
@@ -70,15 +68,17 @@ for filename in os.listdir(path): #go through each contract file in directory
     	row.append(sheet.cell('E43').value) # Input Value of Amt Received
     	row.append(sheet.cell('E44').value) # Proposed Funding Changes
     	contracts.append(row)
+print contracts
 
+#writing the lists to the excel file
 x = -1
 y = -1
 for i in range(2, 2+len(contracts)):
     x = x + 1
-    for j in range(1,13):
+    for j in range(1,1+len(contracts[0])):
         y = y + 1
         c = summary.active.cell(row = i, column = j)
         c.value = contracts[x][y]
     y= -1
     
-summary.save(filename = '_FGT Summary.xlsx')
+summary.save(filename = '_FGT Summary.xlsx') #saving the excel summary file as '_FGT Summary.xlsx'
