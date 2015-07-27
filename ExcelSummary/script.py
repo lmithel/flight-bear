@@ -25,50 +25,54 @@ contracts = []
 
 for filename in os.listdir(path): #go through each contract file in directory
     wb = load_workbook(path + "/" + filename, data_only=True) #open a contract file
-    
     if 'HS' not in filename: #Not Home Share Contracts
-   	row = []
-    	sheet = wb.get_sheet_by_name('Page1') 
-        row.append(filename)
-    	row.append(sheet.cell('J13').value) # servicetype
-    	row.append(sheet.cell('D15').value) # num of ppl
-    	row.append(sheet.cell('D45').value) # MPP Cont %
-    	row.append(sheet.cell('D47').value) # MPP Part %
-    	row.append(sheet.cell('D49').value) # LTD %
+    	if 'Page 1' in wb.get_sheet_names():
+            print filename + ' is mislabeled. please check naming conventions'
+        else:
+	        row = []
+	        sheet = wb.get_sheet_by_name('Page1') 
+	        row.append(filename)
+	        row.append(sheet.cell('J13').value) # servicetype
+	        row.append(sheet.cell('D15').value) # num of ppl
+	        row.append(sheet.cell('D45').value) # MPP Cont %
+	        row.append(sheet.cell('D47').value) # MPP Part %
+	        row.append(sheet.cell('D49').value) # LTD %
 
-    	sheet = wb.get_sheet_by_name('Page2A')
-    	row.append(sheet.cell('U8').value) #FTE
+	        sheet = wb.get_sheet_by_name('Page2A')
+	        row.append(sheet.cell('U8').value) #FTE
 
-    	sheet = wb.get_sheet_by_name('Page3')
-    	row.append(sheet.cell('E90').value) # Total Cost of Contract
-    	row.append(sheet.cell('E107').value) # Amt BACI receives
-    	row.append(sheet.cell('E98').value) # Gap
-    	row.append(sheet.cell('E109').value) # Input Value of Amt Received
-    	row.append(sheet.cell('E110').value) # Proposed Funding Changes"""
-        contracts.append(row)
+	        sheet = wb.get_sheet_by_name('Page3')
+	        row.append(sheet.cell('E90').value) # Total Cost of Contract
+	        row.append(sheet.cell('E107').value) # Amt BACI receives
+	    	row.append(sheet.cell('E98').value) # Gap
+	    	row.append(sheet.cell('E109').value) # Input Value of Amt Received
+	    	row.append(sheet.cell('E110').value) # Proposed Funding Changes"""
+	        contracts.append(row)
 
     else: #Home Share Contracts
     	row = []
+        if 'Page1' in wb.get_sheet_names():
+            print filename + ' is mislabeled. please check naming conventions'
+        else:
+        	sheet = wb.get_sheet_by_name('Page 1')
+        	row.append(filename)
+        	row.append(sheet.cell('I9').value) # servicetype
+        	row.append(sheet.cell('C15').value) # number of ppl
+        	row.append(sheet.cell('C29').value) # MPP Cont %
+        	row.append(sheet.cell('C31').value) # MPP Part %
+        	row.append(sheet.cell('C35').value) # LTD %
 
-    	sheet = wb.get_sheet_by_name('Page 1')
-        row.append(filename)
-    	row.append(sheet.cell('I9').value) # servicetype
-    	row.append(sheet.cell('C15').value) # number of ppl
-    	row.append(sheet.cell('C29').value) # MPP Cont %
-    	row.append(sheet.cell('C31').value) # MPP Part %
-    	row.append(sheet.cell('C35').value) # LTD %
+        	sheet = wb.get_sheet_by_name('Page 5')
+        	row.append(sheet.cell('G10').value) # FTE
 
-    	sheet = wb.get_sheet_by_name('Page 5')
-    	row.append(sheet.cell('G10').value) # FTE
+        	sheet = wb.get_sheet_by_name('Page 2')
+        	row.append(sheet.cell('E39').value) # Total Cost of Contract
+        	row.append(sheet.cell('E43').value) # Amt BACI receives
+        	row.append('see proposed changes') # Gap
+        	row.append(sheet.cell('E43').value) # Input Value of Amt Received
+        	row.append(sheet.cell('E44').value) # Proposed Funding Changes
+        	contracts.append(row)
 
-    	sheet = wb.get_sheet_by_name('Page 2')
-    	row.append(sheet.cell('E39').value) # Total Cost of Contract
-    	row.append(sheet.cell('E43').value) # Amt BACI receives
-    	row.append('see proposed changes') # Gap
-    	row.append(sheet.cell('E43').value) # Input Value of Amt Received
-    	row.append(sheet.cell('E44').value) # Proposed Funding Changes
-    	contracts.append(row)
-print contracts
 
 #writing the lists to the excel file
 x = -1
